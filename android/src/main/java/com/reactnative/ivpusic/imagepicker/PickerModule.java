@@ -17,6 +17,7 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.webkit.MimeTypeMap;
 
+import androidx.annotation.OptIn;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
@@ -90,7 +91,7 @@ class PickerModule extends ReactContextBaseJavaModule implements ActivityEventLi
     private ReadableMap options;
 
     private String cropperActiveWidgetColor = null;
-    private String cropperStatusBarColor = null;
+    private Boolean cropperStatusBarLight = null;
     private String cropperToolbarColor = null;
     private String cropperToolbarTitle = null;
     private String cropperToolbarWidgetColor = null;
@@ -133,7 +134,7 @@ class PickerModule extends ReactContextBaseJavaModule implements ActivityEventLi
         height = options.hasKey("height") ? options.getInt("height") : 0;
         cropping = options.hasKey("cropping") && options.getBoolean("cropping");
         cropperActiveWidgetColor = options.hasKey("cropperActiveWidgetColor") ? options.getString("cropperActiveWidgetColor") : null;
-        cropperStatusBarColor = options.hasKey("cropperStatusBarColor") ? options.getString("cropperStatusBarColor") : null;
+        cropperStatusBarLight = options.hasKey("cropperStatusBarColor") ? options.getBoolean("cropperStatusBarLight") : null;
         cropperToolbarColor = options.hasKey("cropperToolbarColor") ? options.getString("cropperToolbarColor") : null;
         cropperToolbarTitle = options.hasKey("cropperToolbarTitle") ? options.getString("cropperToolbarTitle") : null;
         cropperToolbarWidgetColor = options.hasKey("cropperToolbarWidgetColor") ? options.getString("cropperToolbarWidgetColor") : null;
@@ -163,7 +164,7 @@ class PickerModule extends ReactContextBaseJavaModule implements ActivityEventLi
     @ReactMethod
     public void clean(final Promise promise) {
 
-        final Activity activity = getCurrentActivity();
+        final Activity activity = reactContext.getCurrentActivity();
         final PickerModule module = this;
 
         if (activity == null) {
@@ -197,7 +198,7 @@ class PickerModule extends ReactContextBaseJavaModule implements ActivityEventLi
             return;
         }
 
-        final Activity activity = getCurrentActivity();
+        final Activity activity = reactContext.getCurrentActivity();
         final PickerModule module = this;
 
         if (activity == null) {
@@ -296,7 +297,7 @@ class PickerModule extends ReactContextBaseJavaModule implements ActivityEventLi
 
     @ReactMethod
     public void openCamera(final ReadableMap options, final Promise promise) {
-        final Activity activity = getCurrentActivity();
+        final Activity activity = reactContext.getCurrentActivity();
 
         if (activity == null) {
             promise.reject(E_ACTIVITY_DOES_NOT_EXIST, "Activity doesn't exist");
@@ -395,7 +396,7 @@ class PickerModule extends ReactContextBaseJavaModule implements ActivityEventLi
 
     @ReactMethod
     public void openPicker(final ReadableMap options, final Promise promise) {
-        final Activity activity = getCurrentActivity();
+        final Activity activity = reactContext.getCurrentActivity();
 
         if (activity == null) {
             promise.reject(E_ACTIVITY_DOES_NOT_EXIST, "Activity doesn't exist");
@@ -416,7 +417,7 @@ class PickerModule extends ReactContextBaseJavaModule implements ActivityEventLi
 
     @ReactMethod
     public void openCropper(final ReadableMap options, final Promise promise) {
-        final Activity activity = getCurrentActivity();
+        final Activity activity = reactContext.getCurrentActivity();
 
         if (activity == null) {
             promise.reject(E_ACTIVITY_DOES_NOT_EXIST, "Activity doesn't exist");
@@ -664,8 +665,8 @@ class PickerModule extends ReactContextBaseJavaModule implements ActivityEventLi
             options.setToolbarColor(Color.parseColor(cropperToolbarColor));
         }
 
-        if (cropperStatusBarColor != null) {
-            options.setStatusBarColor(Color.parseColor(cropperStatusBarColor));
+        if (cropperStatusBarLight != null) {
+            options.setStatusBarLight(cropperStatusBarLight);
         }
 
         if (cropperToolbarWidgetColor != null) {
