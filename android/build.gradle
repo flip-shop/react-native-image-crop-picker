@@ -29,6 +29,6 @@ def media3_version = "1.7.1"
 dependencies {
     implementation 'com.facebook.react:react-native:+'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-    implementation 'com.github.yalantis:ucrop:2.2.21-native'
+    implementation 'com.github.yalantis:ucrop:2.2.11-native'
     implementation "androidx.media3:media3-transformer:$media3_version"
 }
